@@ -15,11 +15,11 @@ Browse to the project folder then type
 ```
 scrapy crawl nexa
 ```
-or
+to run the script or
 ```
 scrapy crawl nexa -L WARNING
 ```
-to suppress debug messages
+to run the script with no debug messages
 
 ### Prerequisites
 
