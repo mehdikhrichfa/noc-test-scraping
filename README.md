@@ -13,11 +13,11 @@ Currently it can scrape:
 Browse to the project folder then type
 
 ```
-scrapy crawl nexa
+scrapy crawl main
 ```
 to run the script or
 ```
-scrapy crawl nexa -L WARNING
+scrapy crawl main -L WARNING
 ```
 to run the script with no debug messages
 
