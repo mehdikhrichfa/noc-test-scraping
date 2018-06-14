@@ -13,17 +13,20 @@ Currently it can scrape:
 Browse to the project folder then type
 
 ```
-scrapy crawl nexa
+scrapy crawl main
 ```
 to run the script or
 ```
-scrapy crawl nexa -L WARNING
+scrapy crawl main -L WARNING
 ```
 to run the script with no debug messages
 
 ### Prerequisites
 
 You'll need [Scrapy v1.5.0](https://scrapy.org/) and [Python 3](https://www.python.org/download/releases/3.0/) to run the spider.
+Colorama is used for the output.
+
+` pip3 install --user scrapy colorama `
 
 ## Built With
 
