@@ -8,6 +8,10 @@ init()
 class NexaSpider(scrapy.Spider):
     name = 'nexa'
 
+    #Command line boolean flags
+    download_path = False
+    print_only = False
+
     errors = {
         'BKC': 0,
         'NEXA': 0,
@@ -31,6 +35,14 @@ class NexaSpider(scrapy.Spider):
         'http://networkcultures.org/publications/',
         'https://law.yale.edu/isp/publications',
     ]
+
+    def __init__(self, *args, **kwargs):
+        """
+        Takes a command line argument and runs it
+
+        :param args: String object containing the command line arguments
+        """
+        super().__init__(**kwargs)
 
     def parse(self, response):
         """
