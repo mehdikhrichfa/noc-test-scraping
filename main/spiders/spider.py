@@ -5,8 +5,8 @@ from colorama import init, Fore, Style
 init()
 
 
-class NexaSpider(scrapy.Spider):
-    name = 'nexa'
+class Spider(scrapy.Spider):
+    name = 'main'
 
     errors = {
         'BKC': 0,

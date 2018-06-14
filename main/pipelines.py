@@ -6,7 +6,7 @@
 # See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
 
-class NexatestPipeline(object):
+class Pipeline(object):
     def process_item(self, item, spider):
         return item
 
