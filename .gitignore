@@ -16,6 +16,7 @@ htmlcov/
 .cache/
 .swp
 downloaded
+downloaded/*
 
 # Windows
 Thumbs.db
