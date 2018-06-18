@@ -34,7 +34,7 @@ where <b>&lt;center&gt;</b> can be replaced by:
 ### Prerequisites
 
 You'll need [Scrapy v1.5.0](https://scrapy.org/) and [Python 3](https://www.python.org/download/releases/3.0/) to run the spider.
-Colorama is used for the output.
+[Colorama](https://pypi.org/project/colorama/) is used for the output.
 
 ` pip3 install --user scrapy colorama `
 
