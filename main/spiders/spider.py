@@ -8,8 +8,8 @@ init()
 class Spider(scrapy.Spider):
     name = 'main'
 
-    #Command line boolean flags
-    download_path = False
+    # Command line boolean flags
+    download_path = "/Mehdi Khrichfa/Documents/Libri"
     print_only = False
 
     errors = {
@@ -35,6 +35,8 @@ class Spider(scrapy.Spider):
         'http://networkcultures.org/publications/',
         'https://law.yale.edu/isp/publications',
     ]
+
+    file_urls = []
 
     def __init__(self, *args, **kwargs):
         """
@@ -66,15 +68,24 @@ class Spider(scrapy.Spider):
                 parse_paper = parser
                 break
         
-        for paper in papers:                                 # Crawl through each paper's page to retrieve the .pdf file
+        for paper in papers:    # Crawl through each paper's page to retrieve the .pdf file
             yield response.follow(paper, parse_paper)
-        
+            print("paper: " + str(paper))
+
         if response.css('a[title="Go to next page"]'):                  # Go to the next page to do the same thing again
             a = response.css('a[title="Go to next page"]')[0]
+            print("nextpage: " + a.css("::attr(href)").extract_first())
             yield response.follow(a, callback=self.parse)
         elif response.css('.next a'):
             a = response.css('.next a')[0]
             yield response.follow(a, callback=self.parse, dont_filter=True)
+        else:
+            print("\n\n\n\nH E R E !" + center + "\n\n\n\n")
+            for file in self.file_urls:
+                print(file)
+            print("Count: " + strlen(self.file_urls))
+            yield {'file_urls': self.file_urls}
+
 
     def parse_BKC(self, response):                                               # Parse a BKC paper page
         """
@@ -197,6 +208,7 @@ class Spider(scrapy.Spider):
             color = Fore.GREEN
             text = pdf_file
             self.retrieved[center] += 1
+            self.file_urls.append(response.urljoin(pdf_file))
 
         else:
             color = Fore.RED
@@ -211,7 +223,6 @@ class Spider(scrapy.Spider):
         """
         Called automatically before the end of the execution of the spider.
         Prints the number of files it found and the number of missing files (when the spider expected to find one).
-
 
         :param reason: String object containing the reason why the spider was closed
         """
