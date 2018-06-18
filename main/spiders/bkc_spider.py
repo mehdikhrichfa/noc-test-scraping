@@ -94,7 +94,7 @@ class Spider(scrapy.Spider):
         pdf_file = response.css(pdf_css).extract_first()
         print_url(self, response, pdf_file, self.name.upper())
         if (not self.print_only) and (pdf_file is not None):
-            return {"file_urls": [response.urljoin(pdf_file)]}
+            return {"file_urls": [response.urljoin(pdf_file) + '&download=yes']}
 
     def parse_DASH(self, response):                                       # Parse the DASH page to obtain the paper link
         """
