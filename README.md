@@ -10,16 +10,26 @@ Currently it can scrape:
 
 ## Getting Started
 
-Browse to the project folder then type
+Browse to the project folder then, to run the script, type
 
 ```
-scrapy crawl main
+scrapy crawl <center>
 ```
-to run the script or
+where <b>&lt;center&gt;</b> can be replaced by:
+* nexa
+* bkc
+* inc
+* cis
+* isp
+
+### Options
 ```
-scrapy crawl main -L WARNING
+-L WARNING                              #run the script with no debug messages
+
+-a print_only=true                      #print the URLs without downloading the files
+
+-s FILES_STORE="/path/to/valid/dir"     #choose the folder to store the downloded pdf files
 ```
-to run the script with no debug messages
 
 ### Prerequisites
 
