@@ -1,5 +1,5 @@
 import scrapy
-from main.utils import print_url
+from utils import print_url
 
 
 class Spider(scrapy.Spider):
@@ -66,6 +66,10 @@ class Spider(scrapy.Spider):
 
         if (not self.print_only) and (pdf_file is not None):
             return {"file_urls": [response.urljoin(pdf_file)]}
+        elif self.print_only and (pdf_file is not None):
+            return True
+        else:
+            return False
 
     def closed(self, reason):
         """
