@@ -16,6 +16,7 @@ class TestCis(unittest.TestCase):
     def setUp(self):
         self.spider = Spider()
         self.spider.print_only = True
+        self.spider.testing = True
         self.expected_parse = glob.glob('test_pages/cis/parse/*.html')
         self.expected_parse = [page.split('/')[-1].split('\\')[-1].split('.')[0] for page in self.expected_parse]
 
@@ -30,10 +31,8 @@ class TestCis(unittest.TestCase):
     def test_parse_cis(self):
         result = []
         for url in [u for u in self.parse_urls if 'white-papers' not in u]:
-            print(url)
             res = self.spider.parse_cis(fake_response_from_file(url=url, path='test_pages/cis/parse/'))
             result.append(res)
-        print(result)
         self.assertEqual(sorted(result), sorted(self.expected_parse_cis))
 
 

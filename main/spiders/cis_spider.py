@@ -8,6 +8,8 @@ class Spider(scrapy.Spider):
     # Command line arguments
     print_only = False
 
+    testing = False
+
     errors = 0
     retrieved = 0
 
@@ -62,7 +64,8 @@ class Spider(scrapy.Spider):
             pdf_css = '.field-item a[href$=".pdf"]::attr(href)'
             pdf_file = response.css(pdf_css).extract_first()
 
-        print_url(self, response, pdf_file, self.name.upper())
+        if(not self.testing):
+            print_url(self, response, pdf_file, self.name.upper())
 
         if (not self.print_only) and (pdf_file is not None):
             return {"file_urls": [response.urljoin(pdf_file)]}
