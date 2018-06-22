@@ -9,13 +9,12 @@ import scrapy
 
 
 class Pipeline(object):
+
     def process_item(self, item, spider):
         return item
 
 
 class PDFPipeline(FilesPipeline):
-
-
 
     def file_path(self, request, response=None, info=None):
         filename = request.url.split('/')[-1].replace('%20', ' ')
