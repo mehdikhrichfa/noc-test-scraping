@@ -37,7 +37,11 @@ class TestCis(unittest.TestCase):
 
         result = sorted(result)
         self.expected_parse = sorted(self.expected_parse)
-        self.assertEqual(self.expected_parse, result)
+
+        for page in [x for x in self.expected_parse if x in self.expected_parse and x not in result]:
+            raise AssertionError('Page ' + page + ' not found!')
+        for page in [x for x in result if x in result and x not in self.expected_parse]:
+            raise AssertionError('Page ' + page + ' was not supposed to be scraped.')
 
     def test_parse_cis(self):
         result_dict = {}
@@ -47,7 +51,8 @@ class TestCis(unittest.TestCase):
             result_dict[self.url_to_filename(url)] = res
 
         for url in result_dict.keys():
-            self.assertEqual(result_dict[url], self.expected_parse_cis[url],  'Expected ' + ('' if self.expected_parse_cis[url] else 'no ') + 'PDF in page ' + url)
+            self.assertEqual(result_dict[url], self.expected_parse_cis[url],
+                             'Expected ' + ('' if self.expected_parse_cis[url] else 'no ') + 'PDF in page ' + url)
 
     def url_to_filename(self, url):
         exploded_url = url.replace('?', '_').split('/')
