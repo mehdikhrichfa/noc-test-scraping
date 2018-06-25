@@ -11,6 +11,7 @@ class Spider(scrapy.Spider):
     # Command line arguments
     download_path = "/Mehdi Khrichfa/Documents/Libri"
     print_only = False
+    testing = False
 
     errors = 0
     retrieved = 0

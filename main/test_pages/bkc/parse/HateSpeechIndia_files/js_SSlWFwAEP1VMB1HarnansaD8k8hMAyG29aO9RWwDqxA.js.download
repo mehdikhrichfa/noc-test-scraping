@@ -1,0 +1,97 @@
+/**
+ * @file
+ * A JavaScript file for the theme.
+ *
+ * In order for this JavaScript to be loaded on pages, see the instructions in
+ * the README.txt next to this file.
+ */
+
+// JavaScript should be made compatible with libraries other than jQuery by
+// wrapping it with an "anonymous closure". See:
+// - http://drupal.org/node/1446420
+// - http://www.adequatelygood.com/2010/3/JavaScript-Module-Pattern-In-Depth
+(function ($, Drupal, window, document, undefined) {
+    $(document).ready(function() {
+        // Show/hide full descriptions
+        var $teaserNode = $(".page-node .region-left .top .field-name-field-teaser"),
+            $moreLink = $('<a href="#" class="teaser-swap">more &gt;</a>');
+        if ($teaserNode.children().length > 0) {
+          $teaserNode.children().last().append($moreLink);
+        } else {
+          $teaserNode.append($moreLink);
+        }
+
+        $("a.teaser-swap, a.swap").click(function(){
+            $("section.top .field-name-field-teaser, .short").toggle();
+            $("section.top .field-name-body, .long").toggle();
+        });
+
+        // Toggle the intro banner doodad
+        var intro_count = 3,
+            current_intro = 0,
+            old_intro = 0;
+
+        function intro_rotate() {
+            current_intro = (old_intro + 1) % intro_count;
+            $("#intro .fade").fadeTo(1000, 0, function(){
+              $(this).css("background-position", "0 -" + current_intro * 108 + "px");
+            }).fadeTo(1000, 1);
+            old_intro = current_intro;
+        }
+
+        var intro_interval = setInterval(intro_rotate, 8000);
+
+        $('#intro-toggler').click(function() {
+            $('#intro-wrap').slideToggle(500, function() { $('#intro-toggler').toggleClass('open'); });
+        });
+
+        $("#intro .fade").hover(function() {
+            clearInterval(intro_interval);
+        }, function() {
+            intro_interval = setInterval(intro_rotate, 8000);	
+            intro_rotate();
+        });
+
+
+        // Make my block elements links
+        $('.node-teaser').click(function() {
+            window.location = $(this).find('.node-title a').attr('href');
+        });
+        $('.tabs > li, .pager-item, .pager-next, .pager-last, .pager-previous, .pager-first').click(function() {
+            window.location = $(this).find('a').attr('href');
+        });
+
+        // Alphabetize project buttons
+        var projectSelector = 'body.node-type-project',
+            subProjectSelector = projectSelector + ' .pane-project-subnav-pages',
+            subProjectItemSelector = subProjectSelector + ' li',
+
+            urlFieldSelector = projectSelector + ' .pane-node-field-url',
+            urlFieldItemSelector = urlFieldSelector + ' .field-type-link-field a';
+
+        $(urlFieldItemSelector).wrap('<li />');
+        var $nodes = $(subProjectItemSelector).add(urlFieldSelector + ' li');
+		// Dan HJ requested this be turned off.
+		/*
+        $nodes.sort(function(a, b) {
+          var aText = $(a).text().trim(), bText = $(b).text().trim();
+          if (aText === bText) { return 0; }
+          return aText < bText ? -1 : 1;
+        });
+		*/
+        $(projectSelector + ' section.top').append($('<ul class="project-buttons" />').append($nodes));
+        $(subProjectSelector).add(urlFieldSelector).remove();
+
+
+    });
+    $(window).load(function() {
+      // Knock dates down a line if they're getting overlapped
+      $('.node-teaser .links').each(function() {
+        var $postDate = $(this).parent().find('.post-date');
+        if ($postDate.length > 0 && $(this).position().left + $(this).outerWidth() >= $postDate.position().left) {
+          $postDate.css({ position: 'static', padding: 0 });
+        }
+      });
+    });
+})(jQuery, Drupal, this, this.document);
+;

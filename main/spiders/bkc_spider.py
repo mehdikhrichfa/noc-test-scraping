@@ -1,5 +1,8 @@
 import scrapy
-from main.utils import print_url
+try:
+    from utils import print_url
+except ImportError:
+    from main.utils import print_url
 
 
 class Spider(scrapy.Spider):
@@ -7,6 +10,7 @@ class Spider(scrapy.Spider):
 
     # Command line arguments
     print_only = False
+    testing = False
 
     errors = 0
     retrieved = 0
@@ -64,24 +68,31 @@ class Spider(scrapy.Spider):
         if links is not None:
             for link in links:
                 if 'ssrn' in link:
-                    yield response.follow(link.replace('&download=yes', ''), self.parse_SSRN)
+                    parser = self.parse_SSRN
                     found = True
                     break
                 elif 'dash' in link:
-                    yield response.follow(link, self.parse_DASH)
+                    parser = self.parse_DASH
                     found = True
                     break
                 elif 'arxiv' in link:
-                    yield response.follow(link, self.parse_ARXIV)
+                    parser = self.parse_ARXIV
                     found = True
                     break
                 elif '.pdf' in link:
-                    print_url(self, response, link, self.name.upper())
-                    if (not self.print_only) and (link is not None):
-                        return {"file_urls": [response.urljoin(link)]}
-                    break
-        if not found:
-            print_url(self, response, None, self.name.upper())
+                    parser = None
+                    found = True
+        if not self.testing:
+            if found:
+                if parser is not None:
+                    return response.follow(link.replace('&download=yes', ''), parser)
+                else:
+                    print_url(self, response, None, self.name.upper())
+                    return {"file_urls": [response.urljoin(link)]}
+            else:
+                print_url(self, response, None, self.name.upper())
+        else:
+            return found
 
     def parse_SSRN(self, response):                                       # Parse the SSRN page to obtain the paper link
         """
