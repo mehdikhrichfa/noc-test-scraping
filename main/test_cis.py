@@ -2,32 +2,29 @@ import unittest
 import glob
 from spiders.cis_spider import Spider
 from fake_response_from_file import fake_response_from_file
+import test_center
 
 
-class TestCis(unittest.TestCase):
-    maxDiff = None
+class TestCis(test_center.TestCenter):
 
-    expected_parse = []
-    expected_parse_cis = {'america-needs-federal-robotics-agency': False,
-                          'slowing-down-presses-relationship-between-net-neutrality-and-local-news': True,
-                          'comments-mozillas-proposal': True,
-                          'automated-and-autonomous-driving-regulation-under-uncertainty': True,
-                          'network-neutrality-and-zero-rating': True,
-                          'open-access-publishing-literature-review': True,
-                          'proceedings-volume': True,
-                          'risks-responsible-encryption': True,
-                          'cybersecurity-states-lessons-across-america': False,
-                          'sesta-and-teachings-intermediary-liability': True}
+    expected_parse_center = {'america-needs-federal-robotics-agency': False,
+                             'slowing-down-presses-relationship-between-net-neutrality-and-local-news': True,
+                             'comments-mozillas-proposal': True,
+                             'automated-and-autonomous-driving-regulation-under-uncertainty': True,
+                             'network-neutrality-and-zero-rating': True,
+                             'open-access-publishing-literature-review': True,
+                             'proceedings-volume': True,
+                             'risks-responsible-encryption': True,
+                             'cybersecurity-states-lessons-across-america': False,
+                             'sesta-and-teachings-intermediary-liability': True}
 
     url = 'http://cyberlaw.stanford.edu/publications/white-papers'
     parse_urls = []
 
     def setUp(self):
-        self.spider = Spider()
-        self.spider.print_only = True
-        self.spider.testing = True
-        self.expected_parse = glob.glob('test_pages/cis/parse/*.html')
-        self.expected_parse = [page.split('/')[-1].split('\\')[-1].split('.')[0] for page in self.expected_parse]
+        spider = Spider()
+        expected_parse = glob.glob('test_pages/cis/parse/*.html')
+        super().setUp(spider, expected_parse)
 
     def test_parse(self):
         result = []
@@ -51,12 +48,8 @@ class TestCis(unittest.TestCase):
             result_dict[self.url_to_filename(url)] = res
 
         for url in result_dict.keys():
-            self.assertEqual(result_dict[url], self.expected_parse_cis[url],
-                             'Expected ' + ('' if self.expected_parse_cis[url] else 'no ') + 'PDF in page ' + url)
-
-    def url_to_filename(self, url):
-        exploded_url = url.replace('?', '_').split('/')
-        return exploded_url[-1] if exploded_url[-1] else exploded_url[-2]
+            self.assertEqual(result_dict[url], self.expected_parse_center[url],
+                             'Expected ' + ('' if self.expected_parse_center[url] else 'no ') + 'PDF in page ' + url)
 
 
 if __name__ == '__main__':

@@ -1,5 +1,8 @@
 import scrapy
-from main.utils import print_url
+try:
+    from utils import print_url
+except ImportError:
+    from main.utils import print_url
 
 
 class Spider(scrapy.Spider):
@@ -63,7 +66,10 @@ class Spider(scrapy.Spider):
             pdf_css = '.field-item a[href$=".pdf"]::attr(href)'
             pdf_file = response.css(pdf_css).extract_first()
 
-        print_url(self, response, pdf_file, self.name.upper())
+        if not self.testing:
+            print_url(self, response, pdf_file, self.name.upper())
+        else:
+            return False if pdf_file is None else True
 
         if (not self.print_only) and (pdf_file is not None):
             return {"file_urls": [response.urljoin(pdf_file)]}

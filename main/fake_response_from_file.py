@@ -1,4 +1,3 @@
-import os
 from scrapy.http import TextResponse, Request
 
 
