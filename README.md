@@ -39,7 +39,11 @@ To test the scripts, browse to the main folder, then type
 py test_<center>.py -v
 ```
 where <b>&lt;center&gt;</b> can be replaced by:
+* nexa
+* bkc
+* inc
 * cis
+* isp
 
 
 ### Prerequisites
