@@ -1,0 +1,64 @@
+/** This ccs was added to comply with accessibility standards. It causes links to always have an underline, so that users can distinguish links within a body of text. **/
+
+.news-block h2 a:hover,
+.news-block h2 a:focus{
+
+color: #0e4c92;
+text-decoration: underline;
+
+}
+
+.container p a:link, .container p a:visited{
+
+text-decoration: underline;
+
+
+}
+
+.slide-content p a:link{
+
+text-decoration: none;
+
+
+}
+.slide-content p a:hover{
+
+text-decoration: underline;
+}
+
+/** fixes content type image gallery 2 module thumbnail images **/
+#thumbs-wrapper #thumbs img {
+    display: block;
+    float: left;
+    border: none;
+    width: 125px;
+    height: 62.5px;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+/** fixes for pagination on mobile**/
+@media screen and (max-width: 540px) {
+    .item-list ul li{
+        margin: 0 0 0 0;
+    }
+    .item-list .pager {
+    clear: both;
+    text-align: center;
+    padding-top: 10px;
+}
+
+}
+
+/** fixes side arrows from carousel overaly. Allowd for link to content to be clickable **/
+
+.customNavigation {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    margin: auto;
+    height: 0px;
+}

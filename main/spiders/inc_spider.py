@@ -1,5 +1,8 @@
 import scrapy
-from main.utils import print_url
+try:
+    from utils import print_url
+except ImportError:
+    from main.utils import print_url
 
 
 class Spider(scrapy.Spider):
@@ -7,6 +10,7 @@ class Spider(scrapy.Spider):
 
     # Command line arguments
     print_only = False
+    testing = False
 
     errors = 0
     retrieved = 0
@@ -58,10 +62,16 @@ class Spider(scrapy.Spider):
         pdf_css = 'a[href$=".pdf"]::attr(href)'
         pdf_file = response.css(pdf_css).extract_first()  # Parse paper page
 
-        print_url(self, response, pdf_file, self.name.upper())
+        if not pdf_file:
+            pdf_css = '.pwk-link::attr(href)'
+            pdf_file = response.css(pdf_css).extract_first()  # Parse paper page
 
-        if (not self.print_only) and (pdf_file is not None):
-            return {"file_urls": [response.urljoin(pdf_file)]}
+        if not self.testing:
+            print_url(self, response, pdf_file, self.name.upper())
+
+            if (not self.print_only) and (pdf_file is not None):
+                return {"file_urls": [response.urljoin(pdf_file)]}
+        return False if pdf_file is None else True
 
     def closed(self, reason):
         """

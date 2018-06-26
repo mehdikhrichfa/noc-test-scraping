@@ -1,6 +1,4 @@
 import unittest
-from scrapy.spider import Spider
-from fake_response_from_file import fake_response_from_file
 
 
 class TestCenter(unittest.TestCase):
@@ -19,7 +17,8 @@ class TestCenter(unittest.TestCase):
         self.expected_parse = [self.path_to_filename(page) for page in expected_parse]
 
     def path_to_filename(self, path):
-        return path.split('/')[-1].split('\\')[-1].split('.')[0]
+        path = path.split('/')[-1].split('\\')[-1]
+        return path[:path.rindex('.') if '.' in path else None]
 
     def url_to_filename(self, url):
         exploded_url = url.replace('?', '_').split('/')

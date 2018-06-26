@@ -1,0 +1,164 @@
+/***160823******/
+a.noAfter:after{content:none}
+.container figure.left, 
+.container figure.right {
+    display: table;
+    padding: 15px;
+    width: 14px;
+    border: 0px;
+}
+.container figure.left {
+    float: left;
+    margin-right: 15px;
+}
+.container figure.right {
+    float: right;
+    margin-left: 15px;
+}
+.cclgallery figure {
+    padding: 10px 15px;
+}
+.container figcaption, 
+.container figcaption p {
+    font-size: 13px;
+    padding: 5px 0 0 0;
+}
+.container .cclgallery {
+    clear: both;
+    margin: auto;
+    padding: 10px 0;
+}
+.hr {
+    width: 80%;
+    height: 1px;
+    margin: 25px auto;
+    border-bottom: 1px solid #dfdfdf;
+    clear: both;
+}
+.datatable {
+    font-size: 90%;
+    margin-top: 10px;
+    width: 85%;
+}
+.datatable .emptycell {
+    background-color: #e9f5fe;
+}
+.datatable .textleft {
+    text-align: left;
+}
+.datatable caption {
+    background-color: #152d40;
+    color: #fff;
+    font-size: 1em;
+    margin-bottom: 2px;
+    padding: 13px 0px 17px 13px;
+    text-align: left;
+    text-decoration: underline;
+}
+.datatable p {
+    margin: 0px;
+}
+.datatable td, 
+.datatable th {
+    border: 1px solid #696969;
+    color: #444;
+    padding: 4px;
+    padding-left: 15px;
+    text-align: center;
+    
+}
+.datatable th {
+    background-color: #204460;
+    border: 1px solid #204460;
+    border-collapse: separate;
+    color: #c0c0c0;
+    padding: 4px;
+    text-align: center;
+}
+.datatable tr:nth-child(odd) {
+    background-color: #f1f1f1;
+}
+.datatable tr:hover {
+    background-color: #c0c0c0 !important;
+}
+.facact-categories, .FacAct-Categories {color: #9f841d; font-style: italic; text-transform: capitalize;}
+.facact-ital, .FacAct-Ital {font-style: italic;}
+.facact-name, .FacAct-Name {font-size: larger; font-weight: bold; margin: 35px;}
+.facact-small-caps, .FacAct-Small-Caps {font-size: smaller; text-transform: uppercase;}
+.FacAct-Entry { text-align: justify; text-justify: newspaper; max-width:800px;}
+.emp-ital {font-style: italic; font-size:60%;}
+.imagetable {
+    border: none;
+    display: table;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 650px;
+    table-layout: fixed;
+}
+.imagetable img {
+    padding-bottom: 8px;
+}
+.imagetable td, 
+.caption, 
+.videotable td {
+    font-size: 85%;
+    font-style: normal;
+    margin: 10px;
+    padding: 10px 0;
+    text-align: left;
+    vertical-align: text-top;
+}
+.quoteleft {
+    float: left;
+    margin: 8px 15px 8px 8px;
+}
+.quoteright {
+    float: right;
+    margin: 8px 8px 8px 15px;
+}
+.quoteright, 
+.quoteleft {
+/*    background-image: url('quote.png');
+    background-position: top left;
+    background-repeat: no-repeat;  */
+    border: 1px solid #c0c0c0;
+    color: #4a525a;
+    float: right;
+    font-size: 1.1em;
+    font-style: italic;
+    height: auto;
+    padding: 12px 8px 10px 12px;
+    width: 175px;
+}
+.scheduletable {
+    align: ceter;
+    border: 1px;
+    border-collapse: collapse;
+    bordercolor: #999988;
+    cellpadding: 5px;
+    cellspacing: 0;
+    height: 121px;
+    width: 100% frame:hsides;
+}
+.scheduletable td {
+    border-bottom: 1px solid #999988;
+    vertical-align: text-top;
+}
+.tablesub, 
+.tablesub td {
+    color: #666;
+    font-size: 85%;
+    font-style: italic;
+    padding: 0 15px;
+}
+.imageleft {float: left; padding: 3px; margin: 8px 12px 4px 0; }
+.imageright {float: right; padding: 3px; margin: 8px 0 4px 8px; }
+.menu_infofor {background-color:#204460; color:white}
+/***For YLR Faculty Activity pages***/
+    .FacAct-Categories {font-style:italic; color:#9F841D; text-transform:capitalize}
+    .FacAct-Ital {font-style:italic}
+    .FacAct-Name {font-weight:bold; font-size:larger; margin:35px}
+    .FacAct-Small-Caps { text-transform:uppercase; font-size:smaller}
+    .FacAct-Entry { text-align: justify;   text-justify: newspaper; max-width:600px;}
+/***End Fac Act CSS***/
+

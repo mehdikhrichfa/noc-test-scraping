@@ -1,0 +1,252 @@
+define(function (require) {
+	"use strict";
+
+	var $ = require("jquery");
+	require("jquery");
+	require("sticky");
+	require("dlMenu");
+
+
+
+	(function() {
+
+		function initT1Navigation(){
+			log('init navigation');
+
+			var $trigger = $('.t1-nav .has-menu'); // only items with class .has-menu will trigger
+			var $menu = $('.dhtml-menu-container .collapsed-menu');
+			var $close = $('.dhtml-menu-container .close-menu');
+			var $submenu = $('.sub-navigation .collapsed-menu');
+			if ($trigger.length > 0) {
+				$trigger.on('click', function (e) {
+					var $this = $(this);
+					var target = $this.find('> a').data('target');
+
+					$(".sub-navigation li").removeClass('active');
+					$("#collapsible-search").css('display','none');
+					$(".sub-navigation .last-child i").removeClass('search-close');
+
+					$submenu.slideUp(function() {
+						$submenu.removeClass('menu-open');
+					});
+
+
+					if($trigger.is('.animating')){
+						event.stopPropagation();
+					}
+					else if ($this.hasClass('active')){
+						$this.removeClass('active');
+						$(target).slideUp(function() {
+							$(target).removeClass('menu-open');
+						});
+					} else if ($menu.is('.menu-open:visible')) {
+						var $menuOpen = $menu.closest('.menu-open');
+						$trigger.removeClass('active');
+						$this.addClass('animating');
+						$menuOpen.slideUp({
+							complete: function (){
+								$menu.removeClass('menu-open');
+								$(target).slideDown(function () {
+									$(target).addClass('menu-open');
+									$trigger.removeClass('animating');
+								});
+								$this.addClass('active');
+							}
+						});
+					}
+					else {
+						$this.addClass('animating');
+						$(target).slideDown(function() {
+							$(target).addClass('menu-open');
+							$trigger.removeClass('animating');
+						});
+						$this.addClass('active');
+					}
+					e.preventDefault();
+				});
+				$close.on('click', function (e) {
+					$menu.slideUp(function() {
+						$menu.removeClass('menu-open');
+						$trigger.removeClass('active');
+					});
+					e.preventDefault();
+				});
+			}
+
+		}
+		function initStickyNav(){
+
+			var topOffset;
+
+			if ($(".t1-nav-container").css('display') === 'block') {
+
+				var offset = $("#main").offset();
+				topOffset = offset ? offset.top : 0;
+
+				// this is referencing a plugin that does not support AMD.
+				// the plugin is assigned to the global window.jQuery when it loads, which is the Drupal version, not the AMD version.
+				// therefore, the $ variable here (which refers to the AMD version) does not have the plugin.
+				// we need to access the Drupal version (window.jQuery) to use the plugin.
+				window.jQuery('#sticky-nav-container').sticky({
+					topSpacing:0,
+					className: 'stuck',
+					getWidthFrom: '.main-container',
+					responsiveWidth: true
+				});
+
+				$( window ).scroll(function() {
+					if($(window).scrollTop() > topOffset){
+						$( "#sticky-nav-container" ).addClass("scrolling");
+					}
+					else {
+						$( "#sticky-nav-container" ).removeClass("scrolling");
+					}
+				});
+			}
+			else {
+				$( "#sticky-nav-container" ).removeClass("scrolling");
+			}
+
+
+			$(window).resize(function(){
+				if ($(".t1-nav-container").css('display') === 'none') {
+					$(window).unbind('scroll');
+				}
+				else if ($(".t1-nav-container").css('display') === 'block') {
+					$( window ).scroll(function() {
+						if($(window).scrollTop()> topOffset){
+							$( "#sticky-nav-container" ).addClass("scrolling");
+						}
+						else {
+							$( "#sticky-nav-container" ).removeClass("scrolling");
+						}
+
+
+					});
+				}
+			});
+
+		}
+
+		function initT1SubNavigation(){
+			log('init Subnavigation');
+
+			var $trigger = $('.sub-navigation .sub-btn'); // only items with class .has-menu will trigger
+			var $menu = $('.dhtml-sub-menu-container .collapsed-menu');
+			var $close = $('.dhtml-sub-menu-container .close-menu');
+			var $mainmenu = $('.dhtml-menu-container .collapsed-menu');
+
+			if ($trigger.parent().length > 0) {
+				$trigger.on('click', function (e) {
+					var $this = $(this);
+					var target = $this.data('target');
+
+					if($trigger.is('.animating')){
+						event.stopPropagation();
+					}
+					else if ($this.parent().hasClass('active')){
+						$this.parent().removeClass('active');
+						$(target).slideUp(function() {
+							$(target).removeClass('menu-open');
+						});
+					}
+					else if ($menu.is('.menu-open:visible')) {
+						var $menuOpen = $menu.closest('.menu-open');
+						$trigger.parent().removeClass('active');
+						//$trigger.parent().addClass('animating');
+						$menuOpen.slideUp({
+							complete: function (){
+								$menu.removeClass('menu-open');
+								$(target).slideDown(function () {
+									$(target).addClass('menu-open');
+									$trigger.removeClass('animating');
+								});
+								$this.parent().addClass('active');
+							}
+						});
+					}
+					else {
+
+						$(".t1-nav-container li").removeClass('active');
+						$("#collapsible-search").css('display','none');
+						$(".sub-navigation .last-child i").removeClass('search-close');
+						$mainmenu.slideUp(function() {
+							$mainmenu.removeClass('menu-open');
+						});
+
+						$this.addClass('animating');
+						$(target).slideDown(function() {
+							$(target).addClass('menu-open');
+							$trigger.removeClass('animating');
+						});
+						$this.parent().addClass('active');
+					}
+					e.preventDefault();
+				});
+				$close.on('click', function (e) {
+					$menu.slideUp(function() {
+						$menu.removeClass('menu-open');
+						$trigger.removeClass('active');
+					});
+					e.preventDefault();
+				});
+			}
+
+		}
+
+		function initMobileMenu(){
+
+			// this is referencing a plugin that does not support AMD.
+			// the plugin is assigned to the global window.jQuery when it loads, which is the Drupal version, not the AMD version.
+			// therefore, the $ variable here (which refers to the AMD version) does not have the plugin.
+			// we need to access the Drupal version (window.jQuery) to use the plugin.
+			window.jQuery( '#dl-menu' ).dlmenu({
+				//animationClasses : { classin : 'dl-animate-in-2', classout : 'dl-animate-out-2' }
+				animationClasses : { in : 'dl-animate-in-2', out : 'dl-animate-out-2' }
+			});
+			/**
+			 * 	The following logic was put into the .dlmenu plugin file (vendor/jquery.dlmenu/jquery.dlmenu.js)
+			 * 	into the _openMenu() and _resestMenu() functions
+			 */
+			//$(".mobile-nav-icon").on('click', function () {
+			//
+			//	if ( $(this).hasClass("open") ) {
+			//		$(".overlay").remove();
+			//		$(".mobile-nav-icon").removeClass("open");
+			//	}
+			//	else {
+			//		$(this).addClass("open");
+			//		$(".main-container").append("<div class='overlay'></div>");
+			//	}
+			//});
+		}
+
+		function initSearchMenu(){
+
+			$(".search-icon").click(function () {
+				$(".t1-nav-container li").removeClass('active');
+				$('.dhtml-menu-container .collapsed-menu').slideUp(function() {
+					$('.dhtml-menu-container .collapsed-menu').removeClass('menu-open');
+				});
+
+
+				$(".sub-navigation li").removeClass('active');
+				$('.sub-navigation .collapsed-menu').slideUp(function() {
+					$('.sub-navigation .collapsed-menu').removeClass('menu-open');
+				});
+			});
+
+
+
+		}
+
+		initT1Navigation();
+		initStickyNav();
+		initT1SubNavigation();
+		initMobileMenu();
+		initSearchMenu();
+
+	}());
+
+
+});

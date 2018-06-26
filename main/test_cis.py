@@ -43,6 +43,10 @@ class TestCis(test_center.TestCenter):
     def test_parse_cis(self):
         result_dict = {}
         urls = [u for u in self.parse_urls if 'white-papers' not in u]
+
+        if not urls:
+            raise AssertionError('No URLs retrieved!')
+
         for url in urls:
             res = self.spider.parse_cis(fake_response_from_file(url=url, path='test_pages/cis/parse/'))
             result_dict[self.url_to_filename(url)] = res

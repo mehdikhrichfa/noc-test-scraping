@@ -1,0 +1,75 @@
+// Safe Console Polyfill
+window.log = function () {
+    'use strict';
+    log.history = log.history || [];
+    log.history.push(arguments);
+    if (window.console) {
+        console.log(Array.prototype.slice.call(arguments));
+    }
+};
+require.config({
+    //To get timely, correct error triggers in IE, force a define/shim exports check.
+    //enforceDefine: true,
+
+    paths: {
+        jquery: [
+            '//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min',
+            //If the CDN location fails, load from this location
+            'vendor/jquery/jquery-1.9.1.min'
+        ],
+        //define js libraries
+        jqueryUI:       'vendor/jqueryUI/jquery-ui-1.10.4.custom.min', // JqueryUI script library
+        bootstrap:      'vendor/bootstrap/bootstrap-3.2.0.min', // Bootstrap framework library
+        bsAccessible:      'vendor/bootstrap/bootstrap-accessibility.min',
+        carousel:      	'vendor/carouFredSel/jquery.carouFredSel-6.2.1-packed', // Plugin to develop custom interactive carousels
+        imagesLoaded:   'vendor/imagesLoaded/imagesloaded.pkgd.min', // Plugin to detect when images have been loaded
+        transit:      	'vendor/carouFredSel/helper-plugins/jquery.transit.min', // Plugin to utilize css3 transitions with jquery fallback
+        touchSwipe:     'vendor/carouFredSel/helper-plugins/jquery.touchSwipe.min', // A jquery based plugin for touch based device support
+        owlCarousel:    'vendor/jquery-owlcarousel/owl.carousel', // Plugin for carousel
+        selectBoxIt:    'vendor/jquery.selectBoxIt/jquery.selectBoxIt-3.8.1.min', // Plugin for custom select menus
+        placeholder:    'vendor/jquery.placeholder/jquery.placeholder.min', // Adds placeholder support for non-modern browsers
+        shadowBox:      'vendor/shadowbox/shadowbox.min', // Adds overlay menu functionality
+        dlMenu:      'vendor/jquery.dlmenu/jquery.dlmenu', // Adds overlay menu functionality
+        tabs:      'vendor/cbpFWtabs/cbpFWTabs', // Adds overlay menu functionality
+        sticky:         'vendor/jquery-stickyjs/jquery.sticky', // A jquery plugin for sticky elements https://github.com/garand/sticky
+        tabCollapse:         'vendor/bootstrap-tabcollapse/bootstrap-tabcollapse', // A jquery plugin for sticky elements https://github.com/garand/sticky
+        textResizeDetector: 'vendor/textResizeDetector/textresizedetector' // yls-provided code for detecting browser text resizing (not zooming)
+    },
+    map: {
+        "*": {
+            "jquery": "noconflict"
+        },
+        "noconflict": {
+            "jquery": "jquery"
+        }
+    },
+    //library dependencies
+    shim: {
+        'jqueryUI':     ['jquery'],
+        'bootstrap':    ['jquery'],
+        'imagesLoaded': ['jquery'],
+        'carousel':    	['jquery'],
+        'owlCarousel': 	['jquery'],
+        'transit':    	['jquery'],
+        'touchSwipe':   ['jquery'],
+        'selectBoxIt':  ['jqueryUI'],
+        'placeholder':	['jquery'],
+        'shadowBox':    ['jquery'],
+        'sticky':       ['jquery'],
+        'tabs':         ['jquery'],
+        'bsAccessible': ['bootstrap'],
+        'tabCollapse': ['jquery'],
+        'dlMenu':       ['jquery'],
+        'textResizeDetector': {
+            exports: 'TextResizeDetector'
+        }
+    }
+
+});
+require(['client.app'], function(App){
+    'use strict';
+    App.init();
+});
+
+
+

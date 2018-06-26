@@ -1,5 +1,9 @@
 import scrapy
-from main.utils import print_url
+from scrapy.http import Response
+try:
+    from utils import print_url
+except ImportError:
+    from main.utils import print_url
 
 
 class Spider(scrapy.Spider):
@@ -7,6 +11,7 @@ class Spider(scrapy.Spider):
 
     # Command line arguments
     print_only = False
+    testing = False
 
     errors = 0
     retrieved = 0
@@ -37,8 +42,10 @@ class Spider(scrapy.Spider):
         next_css = '.next a'
         parser = self.parse_isp
 
+
         for pdf_file in parser(response):
             yield pdf_file
+
 
         # Go to the next page
         a = response.css(next_css)
@@ -56,9 +63,12 @@ class Spider(scrapy.Spider):
         pdf_files = response.css(pdf_css).extract()
 
         for pdf_file in pdf_files:
-            print_url(self, response, pdf_file, self.name.upper())
-            if (not self.print_only) and (pdf_file is not None):
-                yield {"file_urls": [response.urljoin(pdf_file)]}
+            if self.testing:
+                yield Response(url=pdf_file)
+            else:
+                print_url(self, response, pdf_file, self.name.upper())
+                if (not self.print_only) and (pdf_file is not None):
+                    yield {"file_urls": [response.urljoin(pdf_file)]}
 
     def closed(self, reason):
         """

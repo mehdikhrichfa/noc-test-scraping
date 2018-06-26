@@ -43,6 +43,10 @@ class TestNexa(test_center.TestCenter):
     def test_parse_nexa(self):
         result_dict = {}
         urls = [u for u in self.parse_urls if 'page=' not in u]
+
+        if not urls:
+            raise AssertionError('No URLs retrieved!')
+
         for url in urls:
             res = self.spider.parse_nexa(fake_response_from_file(url=url, path='test_pages/nexa/parse/'))
             result_dict[self.url_to_filename(url)] = res
