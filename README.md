@@ -36,20 +36,15 @@ where <b>&lt;center&gt;</b> can be replaced by:
 To test the scripts, browse to the main folder, then type
 
 ```
-py test_<center>.py -v
+make tests
 ```
-where <b>&lt;center&gt;</b> can be replaced by:
-* nexa
-* bkc
-* inc
-* cis
-* isp
 
 
 ### Prerequisites
 
 You'll need [Scrapy v1.5.0](https://scrapy.org/) and [Python 3](https://www.python.org/download/releases/3.0/) to run the spider.
 [Colorama](https://pypi.org/project/colorama/) is used for the output.
+[jq](https://stedolan.github.io/jq/) is used in tests.
 
 ` pip3 install --user scrapy colorama `
 
