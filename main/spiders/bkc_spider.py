@@ -7,6 +7,7 @@ except ImportError:
 
 class Spider(scrapy.Spider):
     name = 'bkc'
+    count_404 = 0
 
     # Command line arguments
     print_only = False
@@ -37,7 +38,7 @@ class Spider(scrapy.Spider):
         :param response: Response object containing the 'publications' web page
         :return: Request object containing the next page to scrape
         """
-        papers_css = '.node-readmore a'
+        papers_css = '.c-unique-item a'
         next_css = 'a[title="Go to next page"]'
         parser = self.parse_bkc
 
@@ -60,7 +61,7 @@ class Spider(scrapy.Spider):
         :param response: Response object containing the BKC page dedicated to a single publication
         :return: Request object containing the 'publication repository' page dedicated to the current publication
         """
-        website_css = '.field-item a::attr(href)'
+        website_css = '.c-detail__nav a::attr(href)'
 
         links = response.css(website_css).extract()
         found = False
@@ -81,17 +82,19 @@ class Spider(scrapy.Spider):
                 elif '.pdf' in link:
                     parser = None
                     found = True
-        if not self.testing:
-            if found:
-                if parser is not None:
-                    return response.follow(link.replace('&download=yes', ''), parser)
-                else:
-                    print_url(self, response, None, self.name.upper())
-                    return {"file_urls": [response.urljoin(link)]}
-            else:
-                print_url(self, response, None, self.name.upper())
-        else:
+                    break
+        if self.testing:
             return found
+
+        if found:
+            if parser is not None:
+                return response.follow(link.replace('&download=yes', ''), parser)
+            else:
+                print_url(self, response, link, self.name.upper())
+                if not self.print_only:
+                    return {"file_urls": [response.urljoin(link)]}
+        else:
+            print_url(self, response, None, self.name.upper())
 
     def parse_SSRN(self, response):                                       # Parse the SSRN page to obtain the paper link
         """
@@ -141,3 +144,4 @@ class Spider(scrapy.Spider):
         """
         print('{} missing files: {}'.format(self.name.upper(), self.errors))
         print('{} retrieved files: {}'.format(self.name.upper(), self.retrieved))
+        print('{} 404\'d pages: {}').format(self.name.upper(), self.count_404)
