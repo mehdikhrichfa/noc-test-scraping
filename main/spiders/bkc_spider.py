@@ -7,7 +7,7 @@ except ImportError:
 
 class Spider(scrapy.Spider):
     name = 'bkc'
-    count_404 = 0
+    handle_httpstatus_list = [404]
 
     # Command line arguments
     print_only = False
@@ -144,4 +144,3 @@ class Spider(scrapy.Spider):
         """
         print('{} missing files: {}'.format(self.name.upper(), self.errors))
         print('{} retrieved files: {}'.format(self.name.upper(), self.retrieved))
-        print('{} 404\'d pages: {}').format(self.name.upper(), self.count_404)

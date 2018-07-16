@@ -8,6 +8,7 @@ from scrapy.pipelines.files import FilesPipeline
 import scrapy
 
 
+
 class Pipeline(object):
 
     def process_item(self, item, spider):
@@ -15,10 +16,20 @@ class Pipeline(object):
 
 
 class PDFPipeline(FilesPipeline):
-
+    # count_404 = 0
     def file_path(self, request, response=None, info=None):
+        # print(request.url)
         filename = request.url.split('/')[-1].replace('%20', ' ')
+        question_mark = filename.rfind('?')
+        if not question_mark == -1:
+            # print("Question mark!!!")
+            filename = filename[:question_mark]
         return "full/{}".format(str(filename))
 
     def get_media_requests(self, item, info):
         yield scrapy.Request(item['file_urls'][0])
+
+    # def item_completed(self, results, item, info):
+    #     if not results[0][0]:
+    #         self.count_404 += 1
+    #     print(self.count_404)
