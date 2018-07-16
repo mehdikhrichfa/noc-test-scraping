@@ -28,7 +28,6 @@ class Spider(scrapy.Spider):
         """
         if 'print_only' in kwargs:
             self.print_only = kwargs['print_only'].upper() == 'TRUE'
-            print(self.print_only)
 
     def parse(self, response):
         """
