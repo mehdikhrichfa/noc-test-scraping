@@ -7,7 +7,6 @@ except ImportError:
 
 class Spider(scrapy.Spider):
     name = 'bkc'
-    handle_httpstatus_list = [404]
 
     # Command line arguments
     print_only = False
@@ -62,9 +61,9 @@ class Spider(scrapy.Spider):
         :return: Request object containing the 'publication repository' page dedicated to the current publication
         """
         website_css = '.c-detail__nav a::attr(href)'
-
         links = response.css(website_css).extract()
         found = False
+        parser = None
         if links is not None:
             for link in links:
                 if 'ssrn' in link:
@@ -80,7 +79,6 @@ class Spider(scrapy.Spider):
                     found = True
                     break
                 elif '.pdf' in link:
-                    parser = None
                     found = True
                     break
         if self.testing:
