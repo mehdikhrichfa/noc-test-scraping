@@ -7,8 +7,6 @@
 from scrapy.pipelines.files import FilesPipeline
 import scrapy
 import json
-import main.settings
-import os
 
 
 class Pipeline(object):
