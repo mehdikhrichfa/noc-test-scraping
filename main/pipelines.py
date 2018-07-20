@@ -17,6 +17,7 @@ class Pipeline(object):
 
 class PDFPipeline(FilesPipeline):
     # count_404 = 0
+    # broken = dict()
 
     # @classmethod
     # def from_crawler(cls, crawler):
@@ -49,10 +50,12 @@ class PDFPipeline(FilesPipeline):
 
     def close_spider(self, spider):
         # Write paths and urls
-        with open("path_urls.json", 'w', encoding='utf-8') as file:
-            file.write(json.dumps(self.path_urls))
+        with open('path_urls.json', 'w', encoding='utf-8') as file:
+            file.write(json.dumps(self.path_urls, indent=4))
+
+        # with open('broken.json', 'w', encoding='utf-8') as broken_pdfs:
+        #     broken_pdfs.write(json.dumps(self.broken, indent=4))
 
     # def item_completed(self, results, item, info):
     #     if not results[0][0]:
-    #         self.count_404 += 1
-    #     print(self.count_404)
+    #         self.broken[item['url']] = item['file_urls'][0]

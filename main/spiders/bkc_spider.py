@@ -90,7 +90,8 @@ class Spider(scrapy.Spider):
             else:
                 print_url(self, response, link, self.name.upper())
                 if not self.print_only:
-                    return {"file_urls": [response.urljoin(link)]}
+                    return {"file_urls": [response.urljoin(link)],
+                            "url": response.url}
         else:
             print_url(self, response, None, self.name.upper())
 

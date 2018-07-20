@@ -17,6 +17,9 @@ htmlcov/
 .swp
 downloaded
 downloaded/*
+test
+test/*
+path_urls.json
 
 # Windows
 Thumbs.db
