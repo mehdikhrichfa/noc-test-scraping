@@ -20,6 +20,7 @@ downloaded/*
 test
 test/*
 path_urls.json
+url_names.json
 
 # Windows
 Thumbs.db

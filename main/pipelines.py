@@ -31,6 +31,7 @@ class PDFPipeline(FilesPipeline):
     #     self.basepath = basepath
 
     path_urls = dict()
+    url_names = dict()
 
     def file_path(self, request, response=None, info=None):
         # print(request.url)
@@ -42,16 +43,20 @@ class PDFPipeline(FilesPipeline):
             filename = filename[:question_mark]
 
         self.path_urls[filename] = request.url
-
         return str(filename)
 
     def get_media_requests(self, item, info):
+        self.url_names[item['file_urls'][0]] = item['title'][:item['title'].rfind('|')-1]
         yield scrapy.Request(item['file_urls'][0])
 
     def close_spider(self, spider):
         # Write paths and urls
         with open('path_urls.json', 'w', encoding='utf-8') as file:
             file.write(json.dumps(self.path_urls, indent=4))
+
+        # Write names and urls
+        with open('url_names.json', 'w', encoding='utf-8') as file:
+            file.write(json.dumps(self.url_names, indent=4))
 
         # with open('broken.json', 'w', encoding='utf-8') as broken_pdfs:
         #     broken_pdfs.write(json.dumps(self.broken, indent=4))

@@ -12,6 +12,9 @@ class Spider(scrapy.Spider):
     print_only = False
     testing = False
 
+    files_to_download = dict(dict())
+    paper_id = 0
+
     errors = 0
     retrieved = 0
 
@@ -61,6 +64,9 @@ class Spider(scrapy.Spider):
         :return: Request object containing the 'publication repository' page dedicated to the current publication
         """
         website_css = '.c-detail__nav a::attr(href)'
+        title_css = 'meta[name=title]::attr(content)'
+        meta = dict()
+        meta['title'] = response.css(title_css).extract_first()
         links = response.css(website_css).extract()
         found = False
         parser = None
@@ -86,12 +92,15 @@ class Spider(scrapy.Spider):
 
         if found:
             if parser is not None:
-                return response.follow(link.replace('&download=yes', ''), parser)
+                self.files_to_download[link] = dict()
+                return response.follow(link.replace('&download=yes', ''), parser, meta=meta)
             else:
                 print_url(self, response, link, self.name.upper())
                 if not self.print_only:
-                    return {"file_urls": [response.urljoin(link)],
-                            "url": response.url}
+                    self.files_to_download = dict()
+                    self.files_to_download['file_urls'] = [response.urljoin(link)]
+                    self.files_to_download['title'] = meta['title']
+                    return self.files_to_download
         else:
             print_url(self, response, None, self.name.upper())
 
@@ -102,11 +111,14 @@ class Spider(scrapy.Spider):
         :param response: Response object containing the SSRN (Social Science Research Network) page dedicated to the BKC
                          paper
         """
+        
         pdf_css = '.download-button::attr(href)'
         pdf_file = response.css(pdf_css).extract_first()
         print_url(self, response, pdf_file, self.name.upper())
         if (not self.print_only) and (pdf_file is not None):
-            return {"file_urls": [response.urljoin(pdf_file) + '&download=yes']}
+            self.files_to_download['file_urls'] = [response.urljoin(pdf_file) + '&download=yes']
+            self.files_to_download['title'] = response.meta['title']
+            return self.files_to_download
 
     def parse_DASH(self, response):                                       # Parse the DASH page to obtain the paper link
         """
@@ -116,11 +128,14 @@ class Spider(scrapy.Spider):
         :param response: Response object containing the DASH (Digital Access to Scholarship at Harvard) page dedicated
         to the BKC paper
         """
+        
         pdf_css = '.dash-item-download a::attr(href)'
         pdf_file = response.css(pdf_css).extract_first()
         print_url(self, response, pdf_file, self.name.upper())
         if (not self.print_only) and (pdf_file is not None):
-            return {"file_urls": [response.urljoin(pdf_file)]}
+            self.files_to_download['file_urls'] = [response.urljoin(pdf_file)]
+            self.files_to_download['title'] = response.meta['title']
+            return self.files_to_download
 
     def parse_ARXIV(self, response):
         """
@@ -128,11 +143,14 @@ class Spider(scrapy.Spider):
 
         :param response: Response object containing the ArXiv page dedicated to the BKC paper
         """
+        
         pdf_css = '.full-text a::attr(href)'
         pdf_file = response.css(pdf_css).extract_first()
         print_url(self, response, pdf_file, self.name.upper())
         if (not self.print_only) and (pdf_file is not None):
-            return {"file_urls": [response.urljoin(pdf_file)]}
+            self.files_to_download['file_urls'] = [response.urljoin(pdf_file)]
+            self.files_to_download['title'] = response.meta['title']
+            return self.files_to_download
 
     def closed(self, reason):
         """
