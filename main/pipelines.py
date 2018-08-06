@@ -46,7 +46,7 @@ class PDFPipeline(FilesPipeline):
         return str(filename)
 
     def get_media_requests(self, item, info):
-        self.url_names[item['file_urls'][0]] = item['title'][:item['title'].rfind('|')-1]
+        self.url_names[item['file_urls'][0]] = item['title'][:item['title'].rfind('|')].strip()
         yield scrapy.Request(item['file_urls'][0])
 
     def close_spider(self, spider):
