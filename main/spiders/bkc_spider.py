@@ -6,6 +6,9 @@ except ImportError:
 
 
 class Spider(scrapy.Spider):
+    """
+    Spider to scrape the pdf files from the Berkman Klein Center website's publications section
+    """
     name = 'bkc'
 
     # Command line arguments
@@ -58,10 +61,10 @@ class Spider(scrapy.Spider):
     def parse_bkc(self, response):                                               # Parse a BKC paper page
         """
         Takes the page dedicated to a single publication on the BKC website and either continues crawling to a
-        'publication repository' or downloads the pdf (if present on the page itself)
+        publications repository or downloads the pdf (if present on the page itself)
 
         :param response: Response object containing the BKC page dedicated to a single publication
-        :return: Request object containing the 'publication repository' page dedicated to the current publication
+        :return: Request object containing the publications repository page dedicated to the current publication
         """
         website_css = '.c-detail__nav a::attr(href)'
         title_css = 'meta[name=title]::attr(content)'
@@ -155,7 +158,7 @@ class Spider(scrapy.Spider):
     def closed(self, reason):
         """
         Called automatically before the end of the execution of the spider.
-        Prints the number of files it found and the number of missing files (when the spider expected to find one).
+        Prints the number of file found and the number of missing files (when the spider expected to find one).
 
         :param reason: String object containing the reason why the spider was closed
         """
