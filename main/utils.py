@@ -4,7 +4,7 @@ init()
 
 def print_url(self, response, pdf_file, center):
     """
-    Prints the URL of pdf_file or the url of the last web page reached before giving up on a particular publication
+    Prints the URL of the pdf file or the url of the last web page reached before giving up on a particular publication
     and counts the number of successes and failures in retrieving the publications.
 
     :param response: Response object containing the last website reached before finding the pdf file or giving up
