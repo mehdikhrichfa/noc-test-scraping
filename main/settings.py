@@ -8,7 +8,6 @@
 #     https://doc.scrapy.org/en/latest/topics/settings.html
 #     https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://doc.scrapy.org/en/latest/topics/spider-middleware.html
-import os
 
 BOT_NAME = 'main'
 
@@ -68,6 +67,7 @@ ROBOTSTXT_OBEY = True
 ITEM_PIPELINES = {
     'main.pipelines.PDFPipeline': 1,
 }
+# Default file storage folder
 FILES_STORE = 'downloaded'
 
 DOWNLOAD_TIMEOUT = 500
