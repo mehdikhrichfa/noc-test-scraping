@@ -7,6 +7,9 @@
 from scrapy.pipelines.files import FilesPipeline
 import scrapy
 import json
+import os
+import logging
+import textract
 
 
 class PDFPipeline(FilesPipeline):
@@ -52,10 +55,25 @@ class PDFPipeline(FilesPipeline):
             -   The second one associates file urls and file titles
         :param spider: Spider object that refers to the spider that was just closed
         """
+        basepath = os.path.join(spider.settings['FILES_STORE'], '')
+
         # Write paths and urls
-        with open('path_urls.json', 'w', encoding='utf-8') as file:
+        with open(basepath + 'path_urls.json', 'w', encoding='utf-8') as file:
             file.write(json.dumps(self.path_urls, indent=4))
 
         # Write names and urls
-        with open('url_names.json', 'w', encoding='utf-8') as file:
+        with open(basepath + 'url_names.json', 'w', encoding='utf-8') as file:
             file.write(json.dumps(self.url_names, indent=4))
+
+        # Extract text from all scraped PDFs
+        for pdf in os.listdir(basepath):
+            if os.path.splitext(pdf)[0] + '.txt' not in os.listdir(basepath):
+                try:
+                    text = textract.process(basepath + pdf, encoding='utf-8')
+                    text = text.decode('utf-8')
+                except UnicodeDecodeError:
+                    logging.warning("UNICODE DECODE ERROR: " + pdf + "")
+                    text = ''
+
+                with open(basepath + os.path.splitext(pdf)[0] + '.txt', 'w', encoding='utf-8') as txt_file:
+                    txt_file.write(text)
